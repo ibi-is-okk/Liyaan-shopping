@@ -1,0 +1,64 @@
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px; height: var(--nav-height);
+  background: var(--white); border-bottom: 1px solid var(--gray-mid);
+  position: sticky; top: 0; z-index: 100;
+}
+.navbar--dark { background: var(--dark); border-bottom: none; }
+
+.navbar__logo { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.navbar__logo-text {
+  font-family: var(--font-display); font-size: 20px; letter-spacing: 2px;
+}
+
+.navbar__center { display: flex; gap: 32px; align-items: center; }
+.navbar__link {
+  font-size: 12px; font-weight: 600; letter-spacing: 1px;
+  color: #333; cursor: pointer; transition: color 0.2s;
+  position: relative;
+}
+.navbar__link:hover { color: var(--primary); }
+.navbar__link--active { color: var(--primary); }
+
+.navbar__right { display: flex; align-items: center; gap: 14px; }
+
+.navbar__search-wrap { position: relative; }
+.navbar__search {
+  padding: 7px 14px; border: 1px solid var(--border);
+  border-radius: 20px; font-size: 13px; width: 200px; transition: width 0.3s;
+}
+.navbar__search:focus { width: 260px; border-color: var(--primary); }
+
+.navbar__suggestions {
+  position: absolute; top: 38px; left: 0; right: 0;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-md); z-index: 200;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;
+}
+.navbar__suggestions li {
+  list-style: none; padding: 10px 14px; font-size: 13px;
+  cursor: pointer; transition: background 0.15s;
+}
+.navbar__suggestions li:hover { background: var(--primary-light); }
+
+.navbar__cart-btn {
+  background: none; border: none; font-size: 13px;
+  font-weight: 600; color: #333; display: flex; align-items: center; gap: 4px;
+}
+.navbar__cart-count {
+  background: var(--primary); color: #fff;
+  border-radius: 50%; width: 18px; height: 18px;
+  font-size: 10px; display: flex; align-items: center; justify-content: center;
+}
+
+.navbar__btn {
+  background: var(--dark); color: #fff; border: none;
+  padding: 9px 20px; font-weight: 700; font-size: 12px;
+  letter-spacing: 1px; border-radius: var(--radius-sm);
+}
+.navbar__btn--outline {
+  background: transparent; color: #fff;
+  border: 1px solid #fff; padding: 8px 18px;
+  font-weight: 700; font-size: 12px; letter-spacing: 1px;
+  border-radius: var(--radius-sm);
+}
