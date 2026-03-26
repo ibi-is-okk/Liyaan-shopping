@@ -92,3 +92,42 @@ export const searchProducts = async (q) => {
   await delay();
   return products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 5);
 };
+
+
+// ── Cart ──────────────────────────────────────────────────────────────────────
+export const getCart = async () => {
+  await delay();
+  const user = getUser();
+  if (!user) return [];
+  return (user.cart || []).map((item) => ({
+    ...item,
+    product: products.find((p) => p._id === item.productId) || null,
+  })).filter((i) => i.product);
+};
+
+export const addToCart = async ({ productId, quantity = 1, size }) => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  if (!user.cart) user.cart = [];
+  const existing = user.cart.find((c) => c.productId === productId && c.size === size);
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
+    user.cart.push({ productId, quantity, size });
+  }
+  saveUser(user);
+  const cart = user.cart.map((item) => ({
+    ...item,
+    product: products.find((p) => p._id === item.productId),
+  }));
+  return { cart };
+};
+
+export const removeFromCart = async ({ productId, size }) => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  user.cart = (user.cart || []).filter((c) => !(c.productId === productId && c.size === size));
+  saveUser(user);
+};

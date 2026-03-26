@@ -12,7 +12,7 @@ import SignupPage        from "./pages/SignupPage";
 // import TrendingPage      from "./pages/TrendingPage";
 // import ProductDetailPage from "./pages/ProductDetailPage";
 // import WishlistPage      from "./pages/WishlistPage";
-// import CartPage          from "./pages/CartPage";
+import CartPage          from "./pages/CartPage";
 // import CheckoutPage      from "./pages/CheckoutPage";
 // import OrderSuccessPage  from "./pages/OrderSuccessPage";
 
@@ -44,12 +44,15 @@ export default function App() {
             {/* <Route path="/product/:id" element={<Layout><ProductDetailPage /></Layout>} /> */}
 
             {/* Protected */}
-            {/* <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} />
+             {/* <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} /> */}
             <Route path="/cart"     element={<Layout><ProtectedRoute><CartPage /></ProtectedRoute></Layout>} />
-            <Route path="/checkout" element={<Layout><ProtectedRoute><CheckoutPage /></ProtectedRoute></Layout>} />
-            <Route path="/order-success" element={<Layout><ProtectedRoute><OrderSuccessPage /></ProtectedRoute></Layout>} /> */}
+            {/* <Route path="/checkout" element={<Layout><ProtectedRoute><CheckoutPage /></ProtectedRoute></Layout>} />
+            <Route path="/order-success" element={<Layout><ProtectedRoute><OrderSuccessPage /></ProtectedRoute></Layout>} />  */}
           </Routes>
       </AuthProvider>
     </BrowserRouter>
   );
 }
+
+
+
