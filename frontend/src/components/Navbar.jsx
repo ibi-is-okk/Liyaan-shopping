@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import { useAuth } from "../context/AuthContext";
-//import { useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 import { searchProducts } from "../utils/api";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  // const { cartCount } = useCart();
+  const { cartCount } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");

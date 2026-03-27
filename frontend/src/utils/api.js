@@ -93,6 +93,31 @@ export const searchProducts = async (q) => {
   return products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 5);
 };
 
+// ── Wishlist ──────────────────────────────────────────────────────────────────
+export const getWishlist = async () => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  return (user.wishlist || []).map((id) => products.find((p) => p._id === id)).filter(Boolean);
+};
+
+export const addToWishlist = async (productId) => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  if (!user.wishlist.includes(productId)) user.wishlist.push(productId);
+  saveUser(user);
+  return { wishlist: user.wishlist };
+};
+
+export const removeFromWishlist = async (productId) => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  user.wishlist = user.wishlist.filter((id) => id !== productId);
+  saveUser(user);
+  return { wishlist: user.wishlist };
+};
 
 // ── Cart ──────────────────────────────────────────────────────────────────────
 export const getCart = async () => {
@@ -130,4 +155,70 @@ export const removeFromCart = async ({ productId, size }) => {
   if (!user) throw new Error("Not logged in");
   user.cart = (user.cart || []).filter((c) => !(c.productId === productId && c.size === size));
   saveUser(user);
+};
+
+// ── Orders ────────────────────────────────────────────────────────────────────
+export const placeOrder = async ({ billingDetails }) => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  const cart = (user.cart || []).map((item) => ({
+    ...item,
+    product: products.find((p) => p._id === item.productId),
+  }));
+  if (cart.length === 0) throw new Error("Cart is empty");
+
+  const total = cart.reduce((sum, c) => sum + (c.product?.price || 0) * c.quantity, 0);
+  const order = {
+    _id: `ord${Date.now()}`,
+    user: user._id,
+    items: cart,
+    billingDetails,
+    subtotal: total,
+    total,
+    status: "pending",
+    createdAt: new Date().toISOString(),
+  };
+  orders.push(order);
+
+  // Increment totalOrdered on products
+  cart.forEach(({ productId, quantity }) => {
+    const p = products.find((x) => x._id === productId);
+    if (p) p.totalOrdered += quantity;
+  });
+
+  user.cart = [];
+  saveUser(user);
+  return { message: "Order placed successfully", order };
+};
+
+export const getMyOrders = async () => {
+  await delay();
+  const user = getUser();
+  return orders.filter((o) => o.user === user?._id);
+};
+
+// ── Reviews ───────────────────────────────────────────────────────────────────
+export const getReviews = async (productId) => {
+  await delay();
+  return reviews[productId] || [];
+};
+
+export const addReview = async ({ productId, rating, comment }) => {
+  await delay();
+  const user = getUser();
+  if (!user) throw new Error("Not logged in");
+  const already = (reviews[productId] || []).find((r) => r.userId === user._id);
+  if (already) throw new Error("You have already reviewed this product");
+  const review = {
+    _id: `rev${Date.now()}`,
+    userId: user._id,
+    userName: user.fullName,
+    rating,
+    comment,
+    createdAt: new Date().toISOString(),
+  };
+  if (!reviews[productId]) reviews[productId] = [];
+  reviews[productId].unshift(review);
+  return review;
 };
