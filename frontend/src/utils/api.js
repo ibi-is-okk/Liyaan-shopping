@@ -1,18 +1,16 @@
 import { PRODUCTS, REVIEWS } from "../data/mockData";
 
-// Simulates async network delay
 const delay = (ms = 200) => new Promise((res) => setTimeout(res, ms));
 
-// ── In-memory state ──────────────────────────────────────────────────────────
 let users = [
-  { _id: "u1", fullName: "Demo User", email: "demo@liyaan.com", password: "password123", wishlist: [], cart: [] },
+  { _id: "u1", fullName: "Demo User", email: "demo@liyaan.com", password: "password123", wishlist: [], cart: [], isAdmin: false },
+  { _id: "u_admin", fullName: "Admin", email: "admin@liyaan.com", password: "admin123", wishlist: [], cart: [], isAdmin: true },
 ];
 let orders = [];
 let reviews = { ...REVIEWS };
 let currentUser = null;
 let products = [...PRODUCTS];
 
-// ── Auth ─────────────────────────────────────────────────────────────────────
 export const registerUser = async ({ fullName, email, password }) => {
   await delay();
   if (users.find((u) => u.email === email)) throw new Error("Email already in use");
@@ -22,7 +20,7 @@ export const registerUser = async ({ fullName, email, password }) => {
   const token = btoa(JSON.stringify({ id: user._id }));
   localStorage.setItem("token", token);
   localStorage.setItem("mockUser", JSON.stringify(user));
-  return { user: { id: user._id, fullName: user.fullName, email: user.email }, token };
+  return { user: { id: user._id, fullName: user.fullName, email: user.email, isAdmin: user.isAdmin || false }, token };
 };
 
 export const loginUser = async ({ email, password }) => {
@@ -33,7 +31,7 @@ export const loginUser = async ({ email, password }) => {
   const token = btoa(JSON.stringify({ id: user._id }));
   localStorage.setItem("token", token);
   localStorage.setItem("mockUser", JSON.stringify(user));
-  return { user: { id: user._id, fullName: user.fullName, email: user.email }, token };
+  return { user: { id: user._id, fullName: user.fullName, email: user.email, isAdmin: user.isAdmin || false }, token };
 };
 
 export const getMe = async () => {
@@ -58,7 +56,6 @@ const saveUser = (user) => {
   localStorage.setItem("mockUser", JSON.stringify(user));
 };
 
-// ── Products ─────────────────────────────────────────────────────────────────
 export const getProducts = async ({ category, search, sortBy } = {}) => {
   await delay();
   let result = [...products];
@@ -93,7 +90,6 @@ export const searchProducts = async (q) => {
   return products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 5);
 };
 
-// ── Wishlist ──────────────────────────────────────────────────────────────────
 export const getWishlist = async () => {
   await delay();
   const user = getUser();
@@ -119,7 +115,6 @@ export const removeFromWishlist = async (productId) => {
   return { wishlist: user.wishlist };
 };
 
-// ── Cart ──────────────────────────────────────────────────────────────────────
 export const getCart = async () => {
   await delay();
   const user = getUser();
@@ -157,7 +152,6 @@ export const removeFromCart = async ({ productId, size }) => {
   saveUser(user);
 };
 
-// ── Orders ────────────────────────────────────────────────────────────────────
 export const placeOrder = async ({ billingDetails }) => {
   await delay();
   const user = getUser();
@@ -181,7 +175,6 @@ export const placeOrder = async ({ billingDetails }) => {
   };
   orders.push(order);
 
-  // Increment totalOrdered on products
   cart.forEach(({ productId, quantity }) => {
     const p = products.find((x) => x._id === productId);
     if (p) p.totalOrdered += quantity;
@@ -198,7 +191,6 @@ export const getMyOrders = async () => {
   return orders.filter((o) => o.user === user?._id);
 };
 
-// ── Reviews ───────────────────────────────────────────────────────────────────
 export const getReviews = async (productId) => {
   await delay();
   return reviews[productId] || [];
