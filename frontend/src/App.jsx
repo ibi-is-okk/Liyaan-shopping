@@ -9,8 +9,8 @@ import HomePage          from "./pages/HomePage";
 import LoginPage         from "./pages/LoginPage";
 import SignupPage        from "./pages/SignupPage";
 import CataloguePage     from "./pages/CataloguePage";
-import TrendingPage      from "./pages/TrendingPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
+// import TrendingPage      from "./pages/TrendingPage";
+// import ProductDetailPage from "./pages/ProductDetailPage";
 import WishlistPage      from "./pages/WishlistPage";
 import CartPage          from "./pages/CartPage";
 import CheckoutPage      from "./pages/CheckoutPage";
@@ -33,15 +33,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <CartProvider>
+       <CartProvider>
           <Routes>
             {/* Public */}
             <Route path="/"           element={<Layout><HomePage /></Layout>} />
             <Route path="/login"      element={<Layout><LoginPage /></Layout>} />
             <Route path="/signup"     element={<Layout><SignupPage /></Layout>} />
             <Route path="/catalogue"  element={<Layout><CataloguePage /></Layout>} />
-            <Route path="/trending"   element={<Layout><TrendingPage /></Layout>} />
-            <Route path="/product/:id" element={<Layout><ProductDetailPage /></Layout>} />
+            {/* <Route path="/trending"   element={<Layout><TrendingPage /></Layout>} />
+            <Route path="/product/:id" element={<Layout><ProductDetailPage /></Layout>} /> */}
 
             {/* Protected */}
             <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} />
@@ -54,3 +54,6 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+
+
