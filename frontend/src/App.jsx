@@ -16,7 +16,7 @@ import WishlistPage      from "./pages/WishlistPage";
 import CartPage          from "./pages/CartPage";
 import CheckoutPage      from "./pages/CheckoutPage";
 import OrderSuccessPage  from "./pages/OrderSuccessPage";
-//import AdminDashboard    from "./pages/AdminDashboard";
+import AdminDashboard    from "./pages/AdminDashboard";
 
 import "./styles/variables.css";
 import "./styles/global.css";
@@ -51,7 +51,7 @@ export default function App() {
             <Route path="/catalogue"  element={<Layout><CataloguePage /></Layout>} />
             <Route path="/trending"   element={<Layout><TrendingPage /></Layout>} />
             <Route path="/product/:id" element={<Layout><ProductDetailPage /></Layout>} />
-            {/* <Route path="/admin"       element={<AdminRoute><AdminDashboard /></AdminRoute>} /> */}
+            <Route path="/admin"       element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             
             {/* Protected */}
             <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} />
