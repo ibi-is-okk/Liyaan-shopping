@@ -65,6 +65,14 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+          {/* Show ADMIN link only to admin users */}
+          {user?.isAdmin && (
+            <Link to="/admin"
+              className={`navbar__link ${isActive("/admin") ? "navbar__link--active" : ""}`}
+              style={{ color: "#c77dcc", fontWeight: 700 }}>
+              ⚙ ADMIN
+            </Link>
+          )}
         </div>
       )}
 
