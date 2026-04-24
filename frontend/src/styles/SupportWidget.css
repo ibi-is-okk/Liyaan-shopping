@@ -1,0 +1,238 @@
+.support-widget-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  font-family: 'Inter', sans-serif;
+}
+
+.support-toggle-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color, #ff4d6d), var(--secondary-color, #ff758c));
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.support-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.support-toggle-btn.active {
+  transform: rotate(90deg);
+}
+
+.support-window {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 350px;
+  height: 500px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: bottom right;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease;
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+
+.support-window.open {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+.support-header {
+  background: linear-gradient(135deg, var(--primary-color, #ff4d6d), var(--secondary-color, #ff758c));
+  padding: 1.5rem;
+  color: white;
+}
+
+.support-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.support-tabs {
+  display: flex;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.support-tab {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.support-tab.active {
+  color: var(--primary-color, #ff4d6d);
+  border-bottom: 2px solid var(--primary-color, #ff4d6d);
+  background: white;
+}
+
+.support-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background: #fff;
+}
+
+/* FAQ Styles */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.faq-item {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background: #fafafa;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+/* Chatbot Styles */
+.chat-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-bottom: 1rem;
+}
+
+.message {
+  max-width: 80%;
+  padding: 0.8rem 1rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background: #f1f3f5;
+  color: #333;
+  border-bottom-left-radius: 2px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--primary-color, #ff4d6d);
+  color: white;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 0 0 0;
+  border-top: 1px solid #eee;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.chat-input-area input:focus {
+  border-color: var(--primary-color, #ff4d6d);
+}
+
+.chat-send-btn {
+  padding: 0 1.2rem;
+  background: var(--primary-color, #ff4d6d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.chat-send-btn:hover {
+  background: var(--secondary-color, #ff758c);
+}
+
+.chat-send-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Scrollbar styling */
+.support-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.support-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.support-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.support-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}

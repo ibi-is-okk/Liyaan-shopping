@@ -9,12 +9,14 @@ const MongoUserRepository    = require("./adapters/database/repositories/MongoUs
 const MongoProductRepository = require("./adapters/database/repositories/MongoProductRepository");
 const MongoOrderRepository   = require("./adapters/database/repositories/MongoOrderRepository");
 const MongoReviewRepository  = require("./adapters/database/repositories/MongoReviewRepository");
+const MongoFAQRepository     = require("./adapters/database/repositories/MongoFAQRepository");
 
 const AuthUseCases         = require("./application/AuthUseCases");
 const ProductUseCases      = require("./application/ProductUseCases");
 const OrderUseCases        = require("./application/OrderUseCases");
 const WishlistCartUseCases = require("./application/WishlistCartUseCases");
 const ReviewUseCases       = require("./application/ReviewUseCases");
+const SupportUseCases      = require("./application/SupportUseCases");
 const AdminUseCases        = require("./application/AdminUseCases");
 
 const AuthController         = require("./adapters/http/controllers/AuthController");
@@ -22,6 +24,7 @@ const ProductController      = require("./adapters/http/controllers/ProductContr
 const OrderController        = require("./adapters/http/controllers/OrderController");
 const WishlistCartController = require("./adapters/http/controllers/WishlistCartController");
 const ReviewController       = require("./adapters/http/controllers/ReviewController");
+const SupportController      = require("./adapters/http/controllers/SupportController");
 const AdminController        = require("./adapters/http/controllers/AdminController");
 
 const authRoutes    = require("./adapters/http/routes/authRoutes");
@@ -29,6 +32,7 @@ const productRoutes = require("./adapters/http/routes/productRoutes");
 const orderRoutes   = require("./adapters/http/routes/orderRoutes");
 const userRoutes    = require("./adapters/http/routes/userRoutes");
 const reviewRoutes  = require("./adapters/http/routes/reviewRoutes");
+const supportRoutes = require("./adapters/http/routes/supportRoutes");
 const adminRoutes   = require("./adapters/http/routes/adminRoutes");
 
 // Dependency injection
@@ -36,12 +40,14 @@ const userRepo    = new MongoUserRepository();
 const productRepo = new MongoProductRepository();
 const orderRepo   = new MongoOrderRepository();
 const reviewRepo  = new MongoReviewRepository();
+const faqRepo     = new MongoFAQRepository();
 
 const authUseCases         = new AuthUseCases(userRepo);
 const productUseCases      = new ProductUseCases(productRepo);
 const orderUseCases        = new OrderUseCases(orderRepo, productRepo, userRepo);
 const wishlistCartUseCases = new WishlistCartUseCases(userRepo);
 const reviewUseCases       = new ReviewUseCases(reviewRepo);
+const supportUseCases      = new SupportUseCases(faqRepo);
 const adminUseCases        = new AdminUseCases(userRepo, productRepo, orderRepo);
 adminUseCases.productRepo  = productRepo; // expose for getAllProducts in controller
 
@@ -50,6 +56,7 @@ const productController      = new ProductController(productUseCases);
 const orderController        = new OrderController(orderUseCases);
 const wishlistCartController = new WishlistCartController(wishlistCartUseCases);
 const reviewController       = new ReviewController(reviewUseCases);
+const supportController      = new SupportController(supportUseCases);
 const adminController        = new AdminController(adminUseCases);
 
 const app = express();
@@ -62,6 +69,7 @@ app.use("/api/products", productRoutes(productController));
 app.use("/api/orders",   orderRoutes(orderController));
 app.use("/api/user",     userRoutes(wishlistCartController));
 app.use("/api/reviews",  reviewRoutes(reviewController));
+app.use("/api/support",  supportRoutes(supportController));
 app.use("/api/admin",    adminRoutes(adminController));
 
 app.use(errorHandler);
