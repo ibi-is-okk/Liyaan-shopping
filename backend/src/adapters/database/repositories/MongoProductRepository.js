@@ -1,4 +1,4 @@
-const IProductRepository = require("../../../ports/IProductRepository");
+const IProductRepository = require("../../../ports/ProductRepository");
 const ProductModel = require("../models/ProductModel");
 
 class MongoProductRepository extends IProductRepository {
