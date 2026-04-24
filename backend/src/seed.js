@@ -1,8 +1,9 @@
 require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 const mongoose  = require("mongoose");
 const bcrypt    = require("bcryptjs");
-const UserModel    = require("./src/adapters/database/models/UserModel");
-const ProductModel = require("./src/adapters/database/models/ProductModel");
+const UserModel    = require("./adapters/database/models/UserModel");
+const ProductModel = require("./adapters/database/models/ProductModel");
 
 const PRODUCTS = [
   { name: "2 Piece Embroidered Suit",  description: "Premium lawn fabric with hand embroidery.", price: 4500, category: "suits",   sizes: ["XS","S","M","L","XL"], stock: 15, isNewArrival: true,  isTrending: false, totalOrdered: 42 },
