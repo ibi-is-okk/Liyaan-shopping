@@ -1,4 +1,4 @@
-const IOrderRepository = require("../../../ports/IOrderRepository");
+const IOrderRepository = require("../../../ports/OrderRepository");
 const OrderModel = require("../models/OrderModel");
 
 class MongoOrderRepository extends IOrderRepository {

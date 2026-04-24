@@ -1,4 +1,4 @@
-const IUserRepository = require("../../../ports/IUserRepository");
+const IUserRepository = require("../../../ports/UserRepository");
 const UserModel = require("../models/UserModel");
 const User = require("../../../domain/entities/User");
 

@@ -1,4 +1,4 @@
-const IReviewRepository = require("../../../ports/IReviewRepository");
+const IReviewRepository = require("../../../ports/ReviewRepository");
 const ReviewModel = require("../models/ReviewModel");
 const ProductModel = require("../models/ProductModel");
 
