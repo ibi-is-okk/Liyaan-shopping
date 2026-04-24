@@ -10,12 +10,12 @@ const MongoProductRepository = require("./adapters/database/repositories/MongoPr
 const MongoOrderRepository   = require("./adapters/database/repositories/MongoOrderRepository");
 const MongoReviewRepository  = require("./adapters/database/repositories/MongoReviewRepository");
 
-const AuthUseCases         = require("./application/usecases/AuthUseCases");
-const ProductUseCases      = require("./application/usecases/ProductUseCases");
-const OrderUseCases        = require("./application/usecases/OrderUseCases");
-const WishlistCartUseCases = require("./application/usecases/WishlistCartUseCases");
-const ReviewUseCases       = require("./application/usecases/ReviewUseCases");
-const AdminUseCases        = require("./application/usecases/AdminUseCases");
+const AuthUseCases         = require("./application/AuthUseCases");
+const ProductUseCases      = require("./application/ProductUseCases");
+const OrderUseCases        = require("./application/OrderUseCases");
+const WishlistCartUseCases = require("./application/WishlistCartUseCases");
+const ReviewUseCases       = require("./application/ReviewUseCases");
+const AdminUseCases        = require("./application/AdminUseCases");
 
 const AuthController         = require("./adapters/http/controllers/AuthController");
 const ProductController      = require("./adapters/http/controllers/ProductController");
