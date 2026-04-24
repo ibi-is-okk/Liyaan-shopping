@@ -55,6 +55,7 @@ const adminController        = new AdminController(adminUseCases);
 const app = express();
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
 app.use(express.json());
+app.use("/images", express.static("public/images"));
 
 app.use("/api/auth",     authRoutes(authController));
 app.use("/api/products", productRoutes(productController));

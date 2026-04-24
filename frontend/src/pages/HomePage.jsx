@@ -4,8 +4,8 @@ import { getNewArrivals } from "../utils/api";
 import "../styles/Home.css";
 
 const FAVOURITES = [
-  { name: "Trending", tag: "Explore Now!", path: "/trending" },
-  { name: "All Under Rs. 4000", tag: "Explore Now!", path: "/catalogue" },
+  { name: "Trending", tag: "Explore Now!", path: "/trending", image: "/suit3.jpg" },
+  { name: "All Under Rs. 4000", tag: "Explore Now!", path: "/catalogue", image: "/suit2.jpg" },
 ];
 
 export default function HomePage() {
@@ -30,7 +30,9 @@ export default function HomePage() {
           <p className="hero__subtitle">Live for influential and innovative fashion!</p>
           <button className="btn-primary" onClick={() => navigate("/catalogue")}>Shop Now</button>
         </div>
-        <div className="hero__img" />
+        <div className="hero__img">
+          <img src="/suit6.jpg" alt="Hero" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        </div>
       </section>
 
       <div className="accent-bar" />
@@ -71,7 +73,9 @@ export default function HomePage() {
 
       {/* Payday Sale */}
       <section className="sale-banner">
-        <div className="sale-banner__img" />
+        <div className="sale-banner__img">
+          <img src="/suit2.jpg" alt="Sale" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        </div>
         <div className="sale-banner__content">
           <h2 className="sale-banner__title">PAYDAY<br />SALE NOW</h2>
           <p className="sale-banner__desc">Spend minimal Rs. 5000 get 30% off voucher code for your next purchase</p>
@@ -86,7 +90,9 @@ export default function HomePage() {
         <div className="favourites-grid">
           {FAVOURITES.map((item) => (
             <div key={item.name} className="arrival-card" onClick={() => navigate(item.path)}>
-              <div className="arrival-card__img" style={{ height: 220 }}>{item.name}</div>
+              <div className="arrival-card__img" style={{ height: 220 }}>
+                <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
               <div className="arrival-card__footer">
                 <div>
                   <p className="arrival-card__name">{item.name}</p>
