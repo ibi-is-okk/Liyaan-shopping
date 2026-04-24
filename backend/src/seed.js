@@ -1,7 +1,7 @@
 require("dotenv").config();
 require("dotenv").config({ path: "../.env" });
 const mongoose  = require("mongoose");
-const bcrypt    = require("bcryptjs");
+
 const UserModel    = require("./adapters/database/models/UserModel");
 const ProductModel = require("./adapters/database/models/ProductModel");
 
@@ -23,19 +23,15 @@ async function seed() {
 
   // Create admin user
   const existing = await UserModel.findOne({ email: "admin@liyaan.com" });
-  if (!existing) {
-    const hashed = await bcrypt.hash("admin123", 10);
-    await UserModel.create({
-      fullName: "Admin",
-      email: "admin@liyaan.com",
-      password: hashed,
-      isAdmin: true,
-    });
-    console.log("Admin user created: admin@liyaan.com / admin123");
-  } else {
-    console.log("Admin user already exists");
-  }
-
+if (!existing) {
+  await UserModel.create({
+    fullName: "Admin",
+    email: "admin@liyaan.com",
+    password: "admin123",  // plain text — model will hash it automatically
+    isAdmin: true,
+  });
+  console.log("Admin user created: admin@liyaan.com / admin123");
+}
   // Seed products
   await ProductModel.deleteMany({});
   await ProductModel.insertMany(PRODUCTS);
