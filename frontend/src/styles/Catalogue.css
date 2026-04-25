@@ -40,6 +40,16 @@
   font-size: 14px; font-weight: 700; letter-spacing: 1px; width: fit-content;
 }
 .catalogue-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.section-title {
+  font-family: var(--font-fancy);
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
 
 .catalogue-empty { text-align: center; padding: 60px; color: var(--gray-text); font-size: 15px; }
 .loading-spinner {

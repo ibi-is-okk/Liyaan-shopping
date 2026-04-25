@@ -17,7 +17,7 @@ const SIZES_ALL   = ["XS", "S", "M", "L", "XL", "XXL"];
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 const ProductModal = ({ product, onClose, onSave }) => {
-  const blank = { name: "", price: "", category: "suits", description: "", stock: "", sizes: [], images: [], isNewArrival: false, isTrending: false };
+  const blank = { name: "", price: "", category: "suits", description: "", stock: "", sizes: [], images: [], isNewArrival: true, isTrending: false };
   const [form, setForm] = useState(product ? { ...product, price: product.price, stock: product.stock } : blank);
 
   const toggle = (e) => setForm({ ...form, [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value });

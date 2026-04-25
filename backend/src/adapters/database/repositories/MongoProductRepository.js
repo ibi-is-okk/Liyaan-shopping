@@ -4,8 +4,19 @@ const ProductModel = require("../models/ProductModel");
 class MongoProductRepository extends IProductRepository {
   async findAll({ category, search, sortBy } = {}) {
     let query = {};
-    if (category) query.category = category;
-    if (search)   query.$text = { $search: search };
+    if (category) {
+      if (category.toLowerCase() === "trending") {
+        query.isTrending = true;
+      } else {
+        query.category = { $regex: new RegExp(`^${category}$`, "i") };
+      }
+    }
+    if (search) {
+      query.$or = [
+        { name: { $regex: new RegExp(search, "i") } },
+        { description: { $regex: new RegExp(search, "i") } }
+      ];
+    }
     let sort = {};
     if (sortBy === "price_asc")  sort.price = 1;
     else if (sortBy === "price_desc") sort.price = -1;
@@ -17,7 +28,14 @@ class MongoProductRepository extends IProductRepository {
   async findById(id) { return ProductModel.findById(id); }
   async findTrending(limit = 10) { return ProductModel.find().sort({ totalOrdered: -1 }).limit(limit); }
   async findNewArrivals(limit = 6) { return ProductModel.find({ isNewArrival: true }).sort({ createdAt: -1 }).limit(limit); }
-  async search(query) { return ProductModel.find({ $text: { $search: query } }).limit(10); }
+  async search(query) { 
+    return ProductModel.find({
+      $or: [
+        { name: { $regex: new RegExp(query, "i") } },
+        { description: { $regex: new RegExp(query, "i") } }
+      ]
+    }).limit(10); 
+  }
   async create(data) { return ProductModel.create(data); }
   async update(id, data) { return ProductModel.findByIdAndUpdate(id, data, { new: true }); }
   async delete(id) { return ProductModel.findByIdAndDelete(id); }

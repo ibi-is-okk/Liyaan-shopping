@@ -52,9 +52,10 @@ export default function CataloguePage() {
     }
   };
 
-  const jewelry = products.filter((p) => p.category === "jewelry");
-  const suits    = products.filter((p) => p.category === "suits" || p.category === "2-piece" || p.category === "3-piece");
-  const others   = products.filter((p) => !["jewelry","suits","2-piece","3-piece"].includes(p.category));
+  // Categorization (Case-insensitive)
+  const jewelry = products.filter((p) => p.category?.toLowerCase() === "jewelry");
+  const suits    = products.filter((p) => ["suits", "2-piece", "3-piece"].includes(p.category?.toLowerCase()));
+  const others   = products.filter((p) => !["jewelry", "suits", "2-piece", "3-piece"].includes(p.category?.toLowerCase()));
 
   const sortLabel = SORT_OPTIONS.find((o) => o.value === sortBy)?.label || "Sort by";
 
@@ -108,13 +109,9 @@ export default function CataloguePage() {
       ) : (
         <>
           {/* Jewelry */}
-          {(jewelry.length > 0 || !category) && (
+          {jewelry.length > 0 && (
             <div className="catalogue-section" ref={jewelryRef} id="jewelry">
-              <button
-                className="catalogue-section__label"
-                onClick={() => suitsRef.current?.scrollIntoView({ behavior: "smooth" })}>
-                Go to Suits ↓
-              </button>
+              <h2 className="section-title">Jewelry Collection</h2>
               <div className="catalogue-grid">
                 {jewelry.map((p) => <ProductCard key={p._id} product={p} navigate={navigate} onAddToCart={handleAddToCart} />)}
               </div>
@@ -124,6 +121,7 @@ export default function CataloguePage() {
           {/* Others */}
           {others.length > 0 && (
             <div className="catalogue-section">
+              <h2 className="section-title">Other Collections</h2>
               <div className="catalogue-grid">
                 {others.map((p) => <ProductCard key={p._id} product={p} navigate={navigate} onAddToCart={handleAddToCart} />)}
               </div>
@@ -131,13 +129,9 @@ export default function CataloguePage() {
           )}
 
           {/* Suits */}
-          {(suits.length > 0 || !category) && (
+          {suits.length > 0 && (
             <div className="catalogue-section" ref={suitsRef} id="suits">
-              <button
-                className="catalogue-section__label"
-                onClick={() => jewelryRef.current?.scrollIntoView({ behavior: "smooth" })}>
-                Go to Jewelry ↑
-              </button>
+              <h2 className="section-title">Suits & 2-Piece/3-Piece</h2>
               <div className="catalogue-grid">
                 {suits.map((p) => <ProductCard key={p._id} product={p} navigate={navigate} onAddToCart={handleAddToCart} />)}
               </div>

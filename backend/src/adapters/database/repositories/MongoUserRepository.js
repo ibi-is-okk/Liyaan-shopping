@@ -8,7 +8,8 @@ class MongoUserRepository extends IUserRepository {
     return new User({
       id: doc._id.toString(), fullName: doc.fullName, email: doc.email,
       password: doc.password, isAdmin: doc.isAdmin,
-      wishlist: doc.wishlist.map(id => id.toString()), cart: doc.cart, createdAt: doc.createdAt,
+      wishlist: doc.wishlist.map(item => (item._id ? item : item.toString())), 
+      cart: doc.cart, createdAt: doc.createdAt,
     });
   }
   async findById(id) {
