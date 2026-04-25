@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SupportWidget from "./components/Support/SupportWidget";
 import { useAuth } from "./context/AuthContext";
 
 import HomePage          from "./pages/HomePage";
@@ -27,6 +28,7 @@ function Layout({ children }) {
       <Navbar />
       <main>{children}</main>
       <Footer />
+      <SupportWidget />
     </>
   );
 }

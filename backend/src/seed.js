@@ -3,6 +3,7 @@ require("dotenv").config({ path: "../.env" });
 const mongoose  = require("mongoose");
 const UserModel    = require("./adapters/database/models/UserModel");
 const ProductModel = require("./adapters/database/models/ProductModel");
+const FAQModel     = require("./adapters/database/models/FAQModel");
 
 const PRODUCTS = [
   { name: "2 Piece Embroidered Suit", description: "Premium lawn fabric with hand embroidery.", price: 4500, category: "suits", sizes: ["XS","S","M","L","XL"], stock: 15, isNewArrival: true, isTrending: false, totalOrdered: 42,
@@ -25,6 +26,14 @@ const PRODUCTS = [
     images: ["http://localhost:5173/suit6.jpg"] },
 ];
 
+const FAQS = [
+  { question: "What is your shipping policy?", answer: "We offer standard shipping (3-5 days) and express shipping (1-2 days) across Pakistan.", category: "Shipping" },
+  { question: "How can I return an item?", answer: "You can return items within 30 days of purchase if they are in original condition. Contact support for a return label.", category: "Returns" },
+  { question: "Do you offer international shipping?", answer: "Currently, we only ship within Pakistan. We plan to expand to international shipping soon!", category: "Shipping" },
+  { question: "What payment methods do you accept?", answer: "We accept Cash on Delivery, Credit/Debit Cards, and JazzCash/EasyPaisa.", category: "Payment" },
+  { question: "How do I track my order?", answer: "Once your order is shipped, you will receive a tracking number via SMS and email.", category: "Orders" }
+];
+
 async function seed() {
   await mongoose.connect(process.env.MONGO_URI);
   console.log("Connected to MongoDB");
@@ -44,6 +53,11 @@ if (!existing) {
   await ProductModel.deleteMany({});
   await ProductModel.insertMany(PRODUCTS);
   console.log(`Seeded ${PRODUCTS.length} products`);
+
+  // Seed FAQs
+  await FAQModel.deleteMany({});
+  await FAQModel.insertMany(FAQS);
+  console.log(`Seeded ${FAQS.length} FAQs`);
 
   await mongoose.disconnect();
   console.log("Done!");

@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
@@ -134,5 +134,17 @@ export const addReview = async ({ productId, rating, comment }) => {
   return await apiFetch("/reviews", {
     method: "POST",
     body: JSON.stringify({ productId, rating, comment }),
+  });
+};
+
+// Support
+export const getFAQs = async () => {
+  return await apiFetch("/support/faqs");
+};
+
+export const sendChatMessage = async (message) => {
+  return await apiFetch("/support/chat", {
+    method: "POST",
+    body: JSON.stringify({ message }),
   });
 };
