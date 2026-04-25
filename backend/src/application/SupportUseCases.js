@@ -1,6 +1,11 @@
+const Groq = require("groq-sdk");
+
 class SupportUseCases {
   constructor(faqRepo) {
     this.faqRepo = faqRepo;
+    this.groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    });
   }
 
   async getFAQs() {
@@ -8,48 +13,57 @@ class SupportUseCases {
   }
 
   async getChatbotResponse(message) {
-    const msg = message.toLowerCase();
-    
-    // 1. Try to find a match in FAQs
     try {
       const faqs = await this.faqRepo.getAll();
-      for (const faq of faqs) {
-        const q = faq.question.toLowerCase();
-        // Match if the message contains the question or vice-versa
-        if (msg.includes(q) || q.includes(msg)) return faq.answer;
-        
-        // Match if multiple significant keywords from the question appear in the message
-        const keywords = q.split(/\s+/).filter(w => w.length > 3);
-        const matches = keywords.filter(k => msg.includes(k));
-        if (matches.length >= 2 || (keywords.length === 1 && matches.length === 1)) {
-          return faq.answer;
-        }
-      }
+      
+      // Prepare FAQ context for the LLM
+      const faqContext = faqs.map(f => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n');
+
+      const systemPrompt = `
+You are the official AI assistant for Liyaan, a premium e-commerce store in Pakistan.
+Your goal is to help customers with their inquiries in a friendly, professional, and helpful manner.
+
+USE THE FOLLOWING FAQ DATA TO ANSWER CUSTOMER QUESTIONS ACCURATELY:
+${faqContext}
+
+GENERAL STORE INFO:
+- Store Name: Liyaan
+- Currency: PKR (Rs)
+- Support Email: support@liyaan.com
+- Support Phone: 1-800-LIYAAN (Mon-Sat, 9am-6pm)
+
+INSTRUCTIONS:
+1. If the answer is in the FAQs, use that information.
+2. If the answer is NOT in the FAQs, use your general knowledge but stay within the context of a professional e-commerce store.
+3. Be concise and helpful.
+4. If you don't know the answer, politely ask them to contact our support team at support@liyaan.com.
+5. Always mention prices in PKR (Rs).
+`;
+
+      const completion = await this.groq.chat.completions.create({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message }
+        ],
+        model: "llama-3.1-8b-instant",
+        temperature: 0.7,
+        max_tokens: 500,
+      });
+
+      return completion.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response. Please try again or contact support.";
+
     } catch (err) {
-      console.error("FAQ search failed", err);
+      console.error("AI Chatbot failed, falling back to basic logic", err);
+      return this.getFallbackResponse(message);
     }
+  }
 
-    // 2. Predefined keyword logic
-    if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
-      return "Hello! I'm the Liyaan assistant. How can I help you today?";
-    }
-    if (msg.includes("shipping") || msg.includes("delivery") || msg.includes("track")) {
-      return "We offer standard (3-5 days) and express shipping (1-2 days). You can track your orders in the 'My Orders' section.";
-    }
-    if (msg.includes("return") || msg.includes("refund") || msg.includes("exchange")) {
-      return "Our return policy allows returns within 30 days. Items must be in original condition with tags.";
-    }
-    if (msg.includes("payment") || msg.includes("pay") || msg.includes("price")) {
-      return "We accept all major credit cards, PayPal, and local payment methods. All prices are in PKR (Rs).";
-    }
-    if (msg.includes("contact") || msg.includes("support") || msg.includes("help") || msg.includes("call")) {
-      return "You can reach our support team at support@liyaan.com or call us at 1-800-LIYAAN (Mon-Sat, 9am-6pm).";
-    }
-    if (msg.includes("size") || msg.includes("guide") || msg.includes("fit")) {
-      return "We have a size guide available on every product page. If you're between sizes, we usually recommend sizing up.";
-    }
-
-    return "I'm not sure I understand. You can ask about shipping, returns, sizes, or contact our support team. You can also browse our FAQs for more info!";
+  // Fallback to basic logic if API fails
+  getFallbackResponse(message) {
+    const msg = message.toLowerCase();
+    if (msg.includes("hello") || msg.includes("hi")) return "Hello! I'm the Liyaan assistant. How can I help you today?";
+    if (msg.includes("shipping")) return "We offer standard (3-5 days) and express shipping (1-2 days).";
+    return "I'm having a bit of trouble thinking right now. Please email us at support@liyaan.com for help!";
   }
 }
 
